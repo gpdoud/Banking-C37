@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Banking_C37.Exceptions;
+
 namespace Banking_C37 {
     internal class Account {
 
@@ -15,8 +17,10 @@ namespace Banking_C37 {
 
         public bool Deposit(decimal Amount) {
             if(Amount <= 0) {
-                Console.WriteLine("Amount must be > zero");
-                return false;
+                //Console.WriteLine("Amount must be > zero");
+                var ex =  new AmountGreaterThanZeroException("Amount must be > zero");
+                ex.Amount = Amount;
+                throw ex;
             }
             Balance = Balance + Amount;
             return true;
@@ -24,12 +28,12 @@ namespace Banking_C37 {
 
         public bool Withdraw(decimal Amount) {
             if (Amount <= 0) {
-                Console.WriteLine("Amount must be > zero");
-                return false;
+                var ex = new AmountGreaterThanZeroException("Amount must be > zero");
+                ex.Amount = Amount;
+                throw ex;
             }
             if (Amount > Balance) {
-                Console.WriteLine("Insufficient funds");
-                return false;
+                throw new Exception("Insufficient funds");
             }
             Balance = Balance - Amount;
             return true;
